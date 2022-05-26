@@ -13,17 +13,19 @@ window = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Futebol Cabeçudo')
 
 # ----- Inicia assets
-METEOR_WIDTH = 90
-METEOR_HEIGHT = 66
+PLAYER_WIDTH = 90
+PLAYER_HEIGHT = 66
 SHIP_WIDTH = 50
 SHIP_HEIGHT = 38
 font = pygame.font.SysFont(None, 48)
 background = pygame.image.load('background.png').convert()
 background = pygame.transform.scale(background, (WIDTH, HEIGHT))
 skin1_img = pygame.image.load('skin1.png').convert_alpha()
-skin1_img = pygame.transform.scale(skin1_img, (METEOR_WIDTH, METEOR_HEIGHT))
+skin1_img = pygame.transform.scale(skin1_img, (PLAYER_WIDTH, PLAYER_HEIGHT))
 skin2_img = pygame.image.load('skin2.png').convert_alpha()
-skin2_img = pygame.transform.scale(skin2_img, (METEOR_WIDTH, METEOR_HEIGHT))
+skin2_img = pygame.transform.scale(skin2_img, (PLAYER_WIDTH, PLAYER_HEIGHT))
+bola_img = pygame.image.load('bola55.png').convert_alpha()
+bola_img = pygame.transform.scale(bola_img, (PLAYER_WIDTH-45, PLAYER_HEIGHT-31))
 operador = True
 pulo = 75
 
@@ -56,10 +58,10 @@ class Skin1(pygame.sprite.Sprite):
             
             
         # Mantem dentro da tela
-        if self.rect.right > WIDTH:
-            self.rect.right = WIDTH
-        if self.rect.left < 0:
-            self.rect.left = 0
+        if self.rect.right > WIDTH - 150:
+            self.rect.right = WIDTH - 150
+        if self.rect.left < 150:
+            self.rect.left = 150
         if self.rect.y < 249:
             self.speedy = 0
              
@@ -95,10 +97,10 @@ class Skin2(pygame.sprite.Sprite):
             self.rect.y += 10
         
         # Mantem dentro da tela
-        if self.rect.right > WIDTH:
-            self.rect.right = WIDTH
-        if self.rect.left < 0:
-            self.rect.left = 0
+        if self.rect.right > WIDTH - 150 :
+            self.rect.right = WIDTH - 150
+        if self.rect.left < 150:
+            self.rect.left = 150
         if self.rect.y < 249:
             self.speedy = 0
              
@@ -110,18 +112,37 @@ class Skin2(pygame.sprite.Sprite):
             self.speedy -= pulo
             self.pulando = True
 
+class Bola(pygame.sprite.Sprite):
+    def __init__(self, img):
+        pygame.sprite.Sprite.__init__(self)
+
+        self.image = img
+        self.rect = self.image.get_rect()
+        self.rect.centerx = (WIDTH / 2)
+        self.rect.bottom = HEIGHT -75
+        self.speedx = 0
 
 game = True
 # Variável para o ajuste de velocidade
 clock = pygame.time.Clock()
 FPS = 30
 
+#colisoes
+player1s = pygame.sprite.Group()
+player2s = pygame.sprite.Group()
+bolas = pygame.sprite.Group()
 
 all_sprites = pygame.sprite.Group()
+
 # Criando o jogador
 player1 = Skin1(skin1_img)
 player2 = Skin2(skin2_img)
+bola = Bola(bola_img)
 all_sprites.add(player1,player2)
+all_sprites.add(bola)
+bolas.add(bola)
+
+
 
 # ===== Loop principal =====
 while game:
@@ -178,9 +199,22 @@ while game:
             if event.key == pygame.K_RIGHT:
                 player2.speedx -= 8
 
+    colisao1 = pygame.sprite.spritecollide(player1, bolas, False)
+    colisao2 = pygame.sprite.spritecollide(player2, bolas, False)
+    #colisao3 = pygame.sprite.spritecollide(player1, player2, False)
     
-    
-    
+    if len(colisao1) > 0:
+        bola.speedx += 8
+        colisao1 = []
+    if len(colisao2) > 0:
+        bola.speedx -= 8
+        colisao2 = []
+
+    #if len(colisao3) > 0:
+    #   player1.speedx = 1
+    #    player2.speedx = 1
+    #    colisao3 = []
+
     # ----- Atualiza estado do jogo
     
     
