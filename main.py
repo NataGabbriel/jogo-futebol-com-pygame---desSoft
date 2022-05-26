@@ -25,11 +25,8 @@ skin1_img = pygame.transform.scale(skin1_img, (METEOR_WIDTH, METEOR_HEIGHT))
 skin2_img = pygame.image.load('skin2.png').convert_alpha()
 skin2_img = pygame.transform.scale(skin2_img, (METEOR_WIDTH, METEOR_HEIGHT))
 operador = True
+pulo = 75
 
-'''
-ship_img = pygame.image.load('assets/img/playerShip1_orange.png').convert_alpha()
-ship_img = pygame.transform.scale(ship_img, (SHIP_WIDTH, SHIP_HEIGHT))
-'''
 
 # ----- Inicia estruturas de dados
 # Definindo os novos tipos
@@ -44,6 +41,7 @@ class Skin1(pygame.sprite.Sprite):
         self.rect.bottom = HEIGHT -75
         self.speedx = 0
         self.speedy = 0
+        self.pulando = False
         
     def update(self):
         
@@ -53,18 +51,26 @@ class Skin1(pygame.sprite.Sprite):
         self.rect.y += self.speedy
             
         if self.rect.y < 359:
-            self.rect.y += 15
-
-        
-        
+            
+            self.rect.y += 10
+            
+            
         # Mantem dentro da tela
         if self.rect.right > WIDTH:
             self.rect.right = WIDTH
         if self.rect.left < 0:
             self.rect.left = 0
-        if self.rect.y < 314:
-            self.speedy += 45
-            operador = False
+        if self.rect.y < 249:
+            self.speedy = 0
+             
+        if self.rect.y >= 349:
+            self.pulando = False
+
+    def pular(self):
+        if not self.pulando:
+            self.speedy -= pulo
+            self.pulando = True
+
 
 class Skin2(pygame.sprite.Sprite):
     def __init__(self, img):
@@ -76,41 +82,35 @@ class Skin2(pygame.sprite.Sprite):
         self.rect.centerx = (WIDTH / 2) + 100
         self.rect.bottom = HEIGHT -75
         self.speedx = 0
+        self.speedy = 0
 
     def update(self):
         # Atualização da posição da nave
         self.rect.x += self.speedx
+        
+        self.rect.y += self.speedy
+            
+        if self.rect.y < 359:
+            
+            self.rect.y += 10
+        
         # Mantem dentro da tela
         if self.rect.right > WIDTH:
             self.rect.right = WIDTH
         if self.rect.left < 0:
             self.rect.left = 0
+        if self.rect.y < 249:
+            self.speedy = 0
+             
+        if self.rect.y >= 349:
+            self.pulando = False
 
-'''
-class Meteor(pygame.sprite.Sprite):
-    def __init__(self, img):
-        # Construtor da classe mãe (Sprite).
-        pygame.sprite.Sprite.__init__(self)
+    def pular(self):
+        if not self.pulando:
+            self.speedy -= pulo
+            self.pulando = True
 
-        self.image = img
-        self.rect = self.image.get_rect()
-        self.rect.x = random.randint(0, WIDTH-METEOR_WIDTH)
-        self.rect.y = random.randint(-100, -METEOR_HEIGHT)
-        self.speedx = random.randint(-3, 3)
-        self.speedy = random.randint(2, 9)
 
-    def update(self):
-        # Atualizando a posição do meteoro
-        self.rect.x += self.speedx
-        self.rect.y += self.speedy
-        # Se o meteoro passar do final da tela, volta para cima e sorteia
-        # novas posições e velocidades
-        if self.rect.top > HEIGHT or self.rect.right < 0 or self.rect.left > WIDTH:
-            self.rect.x = random.randint(0, WIDTH-METEOR_WIDTH)
-            self.rect.y = random.randint(-100, -METEOR_HEIGHT)
-            self.speedx = random.randint(-3, 3)
-            self.speedy = random.randint(2, 9)
-'''
 game = True
 # Variável para o ajuste de velocidade
 clock = pygame.time.Clock()
@@ -130,6 +130,7 @@ while game:
     # ----- Trata eventos
     for event in pygame.event.get():
         # ----- Verifica consequências
+    
         if event.type == pygame.QUIT:
             game = False
         # Verifica se apertou alguma tecla.
@@ -140,31 +141,35 @@ while game:
                 player1.speedx -= 8
             if event.key == pygame.K_d:
                 player1.speedx += 8
-            if event.key == pygame.K_w and operador == True:
-                player1.speedy -= 45
+            
+            if event.key == pygame.K_w:
+                player1.pular()
         # Verifica se soltou alguma tecla.
+        
         if event.type == pygame.KEYUP:
             # Dependendo da tecla, altera a velocidade.
             if event.key == pygame.K_a:
                 player1.speedx += 8
             if event.key == pygame.K_d:
                 player1.speedx -= 8
-            if event.key == pygame.K_w:
-                operador = True
-        
-        
             
-        
-
-        
-        #Player 2
+            
     
+        
+    
+
+    
+        #Player 2
+
         if event.type == pygame.KEYDOWN:
             # Dependendo da tecla, altera a velocidade.
             if event.key == pygame.K_LEFT:
                 player2.speedx -= 8
             if event.key == pygame.K_RIGHT:
                 player2.speedx += 8
+            if event.key == pygame.K_UP:
+                player2.pular()
+
         # Verifica se soltou alguma tecla.
         if event.type == pygame.KEYUP:
             # Dependendo da tecla, altera a velocidade.
@@ -172,7 +177,7 @@ while game:
                 player2.speedx += 8
             if event.key == pygame.K_RIGHT:
                 player2.speedx -= 8
-    
+
     
     
     
