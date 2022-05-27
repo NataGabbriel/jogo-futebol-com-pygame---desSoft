@@ -121,7 +121,7 @@ class Bola(pygame.sprite.Sprite):
         self.rect.centerx = (WIDTH / 2)
         self.rect.bottom = HEIGHT -75
         self.speedy = 0
-        self.speedx = 1
+        self.speedx = 0
 
         # Mantem dentro da tela
         if self.rect.right > WIDTH - 140 :
@@ -130,6 +130,8 @@ class Bola(pygame.sprite.Sprite):
             self.rect.left = 140
         if self.rect.y < 249:
             self.speedy = 0
+        #if self.rect.y < 100:
+        #   self.speedy += 2
 
     def update(self):
         self.rect.x += self.speedx
@@ -140,7 +142,7 @@ class Bola(pygame.sprite.Sprite):
         if self.rect.left < 65:
             self.rect.left = 65
         if self.rect.y < 249:
-            self.speedy = 0
+            self.speedy -= 10
 
 game = True
 # Variável para o ajuste de velocidade
@@ -215,17 +217,17 @@ while game:
 
     colisao1 = pygame.sprite.spritecollide(player1, bolas, False)
     colisao2 = pygame.sprite.spritecollide(player2, bolas, False)
-    #colisao3 = pygame.sprite.spritecollide(player1, player2, False)
+    #colisao3 = pygame.sprite.groupcollide(player1, player2, False)
     
     if len(colisao1) > 0:
         bola.speedx = 0
-        bola.speedx += 8
-        bola.speedy += 0
+        bola.speedx += 7
+        bola.speedy -= 0
         colisao1 = []
     if len(colisao2) > 0:
         bola.speedx = 0
-        bola.speedx -= 8
-        bola.speedy += 0
+        bola.speedx -= 7
+        bola.speedy -= 0
         colisao2 = []
 
     #if len(colisao3) > 0:
