@@ -1,6 +1,8 @@
 # ===== Inicialização =====
 # ----- Importa e inicia pacotes
+from math import *
 from email.mime import base
+from numpy import rec
 import pygame
 import random
 
@@ -122,7 +124,6 @@ class Bola(pygame.sprite.Sprite):
         self.rect.bottom = HEIGHT -75
         self.speedy = 0
         self.speedx = 0
-
         # Mantem dentro da tela
         if self.rect.right > WIDTH - 140 :
             self.rect.right = WIDTH - 140
@@ -134,15 +135,25 @@ class Bola(pygame.sprite.Sprite):
         #   self.speedy += 2
 
     def update(self):
+        if self.speedx > 0:
+            self.speedx = self.speedx - 0.01
+        if self.speedx <= 0:
+            self.speedx = self.speedx + 0.01
+
+        
         self.rect.x += self.speedx
         self.rect.y += self.speedy
+        print(self.speedy)
         
         if self.rect.right > WIDTH - 65 :
             self.rect.right = WIDTH - 65
         if self.rect.left < 65:
             self.rect.left = 65
-        if self.rect.y < 249:
-            self.speedy -= 10
+        if self.rect.y < 200:
+            self.speedy *= -1
+        if self.rect.y > 349:
+            self.speedy = 0
+            self.rect.y = 349
 
 game = True
 # Variável para o ajuste de velocidade
@@ -220,15 +231,36 @@ while game:
     #colisao3 = pygame.sprite.groupcollide(player1, player2, False)
     
     if len(colisao1) > 0:
-        bola.speedx = 0
-        bola.speedx += 7
-        bola.speedy -= 0
-        colisao1 = []
+        if bola.rect.centerx < player1.rect.centerx:
+            bola.speedx = 0
+            bola.speedx = - 6*cos(0.523599)
+            bola.speedy = - 6*sin(0.523599)
+        if bola.rect.centerx > player1.rect.centerx:
+            bola.speedx = 0
+            bola.speedx = + 6*cos(0.523599)
+            bola.speedy = - 6*sin(0.523599)
+        if bola.rect.centerx == player1.rect.centerx:
+            bola.speedx = 0
+            bola.speedx = 0
+            bola.speedy = - 6*sin(1.5708)
+        # colisao1 = []
     if len(colisao2) > 0:
-        bola.speedx = 0
-        bola.speedx -= 7
-        bola.speedy -= 0
-        colisao2 = []
+        if bola.rect.centerx < player2.rect.centerx:
+            bola.speedx = 0
+            bola.speedx -= 6*cos(0.523599)
+            bola.speedy = - 6*sin(0.523599)
+        if bola.rect.centerx > player2.rect.centerx:
+            bola.speedx = 0
+            bola.speedx = + 6*cos(0.523599)
+            bola.speedy = - 6*sin(0.523599)
+        if bola.rect.centerx == player2.rect.centerx:
+            bola.speedx = 0
+            bola.speedx = 0
+            bola.speedy = - 6*sin(1.5708)
+        # bola.speedx = 0
+        # bola.speedx -= 7
+        # bola.speedy -= 0
+        # colisao2 = []
 
     #if len(colisao3) > 0:
     #   player1.speedx = 1
