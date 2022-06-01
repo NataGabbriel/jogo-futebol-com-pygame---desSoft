@@ -1,24 +1,24 @@
 # ===== Inicialização =====
 # ----- Importa e inicia pacotes
-from math import *
+from pyparsing import col
+from config import WIDTH, HEIGHT, pulo, PLAYER_HEIGHT, PLAYER_WIDTH, SHIP_HEIGHT, SHIP_WIDTH, sent11, sent12, sent21, sent22, FPS
+from sprites import Skin, Bola
 from email.mime import base
-from numpy import rec
 import pygame
 import random
+
+
+
+
 
 pygame.init()
 
 # ----- Gera tela principal
-WIDTH = 1300
-HEIGHT = 500
+
 window = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Futebol Cabeçudo')
 
 # ----- Inicia assets
-PLAYER_WIDTH = 90
-PLAYER_HEIGHT = 66
-SHIP_WIDTH = 50
-SHIP_HEIGHT = 38
 font = pygame.font.SysFont(None, 48)
 background = pygame.image.load('background.png').convert()
 background = pygame.transform.scale(background, (WIDTH, HEIGHT))
@@ -28,152 +28,28 @@ skin2_img = pygame.image.load('skin2.png').convert_alpha()
 skin2_img = pygame.transform.scale(skin2_img, (PLAYER_WIDTH, PLAYER_HEIGHT))
 bola_img = pygame.image.load('bola55.png').convert_alpha()
 bola_img = pygame.transform.scale(bola_img, (PLAYER_WIDTH-45, PLAYER_HEIGHT-31))
-operador = True
-pulo = 75
-
-
-# ----- Inicia estruturas de dados
-# Definindo os novos tipos
-class Skin1(pygame.sprite.Sprite):
-    def __init__(self, img):
-        # Construtor da classe mãe (Sprite).
-        pygame.sprite.Sprite.__init__(self)
-
-        self.image = img
-        self.rect = self.image.get_rect()
-        self.rect.centerx = (WIDTH / 2) - 100
-        self.rect.bottom = HEIGHT -75
-        self.speedx = 0
-        self.speedy = 0
-        self.pulando = False
-        
-    def update(self):
-        
-        # Atualização da posição da nave
-        self.rect.x += self.speedx
-        
-        self.rect.y += self.speedy
-            
-        if self.rect.y < 359:
-            
-            self.rect.y += 10
-            
-            
-        # Mantem dentro da tela
-        if self.rect.right > WIDTH - 150:
-            self.rect.right = WIDTH - 150
-        if self.rect.left < 150:
-            self.rect.left = 150
-        if self.rect.y < 249:
-            self.speedy = 0
-             
-        if self.rect.y >= 349:
-            self.pulando = False
-
-    def pular(self):
-        if not self.pulando:
-            self.speedy -= pulo
-            self.pulando = True
-
-
-class Skin2(pygame.sprite.Sprite):
-    def __init__(self, img):
-        # Construtor da classe mãe (Sprite).
-        pygame.sprite.Sprite.__init__(self)
-
-        self.image = img
-        self.rect = self.image.get_rect()
-        self.rect.centerx = (WIDTH / 2) + 100
-        self.rect.bottom = HEIGHT -75
-        self.speedx = 0
-        self.speedy = 0
-
-    def update(self):
-        # Atualização da posição da nave
-        self.rect.x += self.speedx
-        
-        self.rect.y += self.speedy
-            
-        if self.rect.y < 359:
-            
-            self.rect.y += 10
-        
-        # Mantem dentro da tela
-        if self.rect.right > WIDTH - 150 :
-            self.rect.right = WIDTH - 150
-        if self.rect.left < 150:
-            self.rect.left = 150
-        if self.rect.y < 249:
-            self.speedy = 0
-             
-        if self.rect.y >= 349:
-            self.pulando = False
-
-    def pular(self):
-        if not self.pulando:
-            self.speedy -= pulo
-            self.pulando = True
-
-class Bola(pygame.sprite.Sprite):
-    def __init__(self, img):
-        pygame.sprite.Sprite.__init__(self)
-
-        self.image = img
-        self.rect = self.image.get_rect()
-        self.rect.centerx = (WIDTH / 2)
-        self.rect.bottom = HEIGHT -75
-        self.speedy = 0
-        self.speedx = 0
-        # Mantem dentro da tela
-        if self.rect.right > WIDTH - 140 :
-            self.rect.right = WIDTH - 140
-        if self.rect.left < 140:
-            self.rect.left = 140
-        if self.rect.y < 249:
-            self.speedy = 0
-        #if self.rect.y < 100:
-        #   self.speedy += 2
-
-    def update(self):
-        if self.speedx > 0:
-            self.speedx = self.speedx - 0.01
-        if self.speedx <= 0:
-            self.speedx = self.speedx + 0.01
-
-        
-        self.rect.x += self.speedx
-        self.rect.y += self.speedy
-        print(self.speedy)
-        
-        if self.rect.right > WIDTH - 65 :
-            self.rect.right = WIDTH - 65
-        if self.rect.left < 65:
-            self.rect.left = 65
-        if self.rect.y < 200:
-            self.speedy *= -1
-        if self.rect.y > 349:
-            self.speedy = 0
-            self.rect.y = 349
-
 game = True
 # Variável para o ajuste de velocidade
 clock = pygame.time.Clock()
-FPS = 30
+
 
 #colisoes
+players = pygame.sprite.Group()
 player1s = pygame.sprite.Group()
 player2s = pygame.sprite.Group()
-bolas = pygame.sprite.Group()
+bola_g = pygame.sprite.Group()
 
 all_sprites = pygame.sprite.Group()
 
 # Criando o jogador
-player1 = Skin1(skin1_img)
-player2 = Skin2(skin2_img)
+player1 = Skin(skin1_img, sent11, sent12)
+player2 = Skin(skin2_img, sent21, sent22)
 bola = Bola(bola_img)
-all_sprites.add(player1,player2)
-all_sprites.add(bola)
-bolas.add(bola)
+all_sprites.add(player1, player2, bola)
+players.add(player1, player2)
+player1s.add(player1)
+player2s.add(player2)
+bola_g.add(bola)
 
 
 
@@ -181,7 +57,13 @@ bolas.add(bola)
 while game:
     clock.tick(FPS)
 
+    colisao0 = pygame.sprite.groupcollide(players, bola_g, False, False)
+    colisao1 = pygame.sprite.groupcollide(player1s, bola_g, False, False)
+    colisao2 = pygame.sprite.groupcollide(player2s, bola_g, False, False)
+    colisao3 = pygame.sprite.groupcollide(player1s, player2s, False, False)
+    colisao4 = pygame.sprite.spritecollide(player1, players, False) 
     # ----- Trata eventos
+    print(bola.rect.y)
     for event in pygame.event.get():
         # ----- Verifica consequências
     
@@ -189,15 +71,31 @@ while game:
             game = False
         # Verifica se apertou alguma tecla.
     
+        
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_y:
+                bola.reset()
+
+
         if event.type == pygame.KEYDOWN:
             # Dependendo da tecla, altera a velocidade.
             if event.key == pygame.K_a:
                 player1.speedx -= 8
             if event.key == pygame.K_d:
                 player1.speedx += 8
-            
             if event.key == pygame.K_w:
                 player1.pular()
+            if event.key == pygame.K_q:
+                if len(colisao1) > 0:
+                    bola.speedx = 20
+            if event.key == pygame.K_e:
+                if len(colisao1) > 0:
+                    bola.speedx = 50
+                    bola.speedy = -30
+        
+        
+        
+        
         # Verifica se soltou alguma tecla.
         
         if event.type == pygame.KEYUP:
@@ -206,8 +104,15 @@ while game:
                 player1.speedx += 8
             if event.key == pygame.K_d:
                 player1.speedx -= 8
-            
+            if event.key == pygame.K_e:
+                if len(colisao1) > 0:
+                    bola.speedx = 25
+                    bola.speedy = 30
         #Player 2
+
+
+
+
 
         if event.type == pygame.KEYDOWN:
             # Dependendo da tecla, altera a velocidade.
@@ -217,7 +122,19 @@ while game:
                 player2.speedx += 8
             if event.key == pygame.K_UP:
                 player2.pular()
-
+            if event.key == pygame.K_RSHIFT:
+                if len(colisao2) > 0:
+                    bola.speedx = -20
+            if event.key == pygame.K_KP_ENTER:
+                if len(colisao2) > 0:
+                    bola.speedx = -50
+                    bola.speedy = -30
+        
+        
+        
+            
+        
+       
         # Verifica se soltou alguma tecla.
         if event.type == pygame.KEYUP:
             # Dependendo da tecla, altera a velocidade.
@@ -225,50 +142,49 @@ while game:
                 player2.speedx += 8
             if event.key == pygame.K_RIGHT:
                 player2.speedx -= 8
+        
+        
 
-    colisao1 = pygame.sprite.spritecollide(player1, bolas, False)
-    colisao2 = pygame.sprite.spritecollide(player2, bolas, False)
-    #colisao3 = pygame.sprite.groupcollide(player1, player2, False)
-    
-    if len(colisao1) > 0:
-        if bola.rect.centerx < player1.rect.centerx:
-            bola.speedx = 0
-            bola.speedx = - 6*cos(0.523599)
-            bola.speedy = - 6*sin(0.523599)
-        if bola.rect.centerx > player1.rect.centerx:
-            bola.speedx = 0
-            bola.speedx = + 6*cos(0.523599)
-            bola.speedy = - 6*sin(0.523599)
-        if bola.rect.centerx == player1.rect.centerx:
-            bola.speedx = 0
-            bola.speedx = 0
-            bola.speedy = - 6*sin(1.5708)
-        # colisao1 = []
-    if len(colisao2) > 0:
-        if bola.rect.centerx < player2.rect.centerx:
-            bola.speedx = 0
-            bola.speedx -= 6*cos(0.523599)
-            bola.speedy = - 6*sin(0.523599)
-        if bola.rect.centerx > player2.rect.centerx:
-            bola.speedx = 0
-            bola.speedx = + 6*cos(0.523599)
-            bola.speedy = - 6*sin(0.523599)
-        if bola.rect.centerx == player2.rect.centerx:
-            bola.speedx = 0
-            bola.speedx = 0
-            bola.speedy = - 6*sin(1.5708)
-        # bola.speedx = 0
-        # bola.speedx -= 7
-        # bola.speedy -= 0
-        # colisao2 = []
-
-    #if len(colisao3) > 0:
-    #   player1.speedx = 1
-    #    player2.speedx = 1
-    #    colisao3 = []
-
-    # ----- Atualiza estado do jogo
-    
+    if len(colisao0) > 0:
+        if len(colisao1) > 0:
+            if player1.speedx == 0 or player1.speedx > 0 and bola.speedx < 0:
+                bola.speedx = 0
+            if player1.rect.x < bola.rect.x:
+                bola.rect.x += 8
+                player1.rect.x -= 1
+                
+            elif player1.rect.x > bola.rect.x:
+                bola.rect.x -= 8
+                player1.rect.x += 1
+                
+            colisao1 = []           
+            
+        if len(colisao2) > 0:
+            if player2.speedx == 0:
+                bola.speedx = 0
+            if player2.rect.x < bola.rect.x:
+                bola.rect.x += 8
+                player2.rect.x -= 1
+                
+            elif player2.rect.x > bola.rect.x:
+                bola.rect.x -= 8
+                player2.rect.x += 1
+                
+            colisao1 = []
+        #elif len(colisao2) > 0:
+        #    bola.speedx -= player2.speedx - 1
+    #else:
+        #if bola.speedx > 0 and len(colisao0) == 0:
+        #    if chute_p1_de == True:
+        #        bola.speedx -= 1
+        #    if chute_p1_ed == True:
+        #        bola.speedx += 1
+    if len(colisao3) > 0:
+        player1.rect.x -= 8
+        player2.rect.x += 8 
+        #player1.speedx = 0
+        #player2.speedx = 0
+        
     
     all_sprites.update()
 
@@ -284,4 +200,3 @@ while game:
 
 # ===== Finalização =====
 pygame.quit()  # Função do PyGame que finaliza os recursos utilizados
-
