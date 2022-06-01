@@ -47,8 +47,8 @@ class Bola(pygame.sprite.Sprite):
         if self.rect.y < 390:
             self.speedy += 5
         elif self.rect.y > 390:
-            self.speedy = 0
-            self.speedx = 0
+            self.speedy = - 0.25*self.speedy
+            self.speedx = 0.8*self.speedx
             self.rect.y = 390
     
     def reset(self):        
