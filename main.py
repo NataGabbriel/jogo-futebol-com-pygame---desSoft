@@ -57,11 +57,11 @@ bola_g.add(bola)
 while game:
     clock.tick(FPS)
 
-    colisao0 = pygame.sprite.groupcollide(players, bola_g, False, False)
-    colisao1 = pygame.sprite.groupcollide(player1s, bola_g, False, False)
-    colisao2 = pygame.sprite.groupcollide(player2s, bola_g, False, False)
-    colisao3 = pygame.sprite.groupcollide(player1s, player2s, False, False)
-    colisao4 = pygame.sprite.spritecollide(player1, players, False) 
+    colisao0 = pygame.sprite.groupcollide(players, bola_g, False, False, pygame.sprite.collide_mask)
+    colisao1 = pygame.sprite.groupcollide(player1s, bola_g, False, False, pygame.sprite.collide_mask)
+    colisao2 = pygame.sprite.groupcollide(player2s, bola_g, False, False, pygame.sprite.collide_mask)
+    colisao3 = pygame.sprite.groupcollide(player1s, player2s, False, False, pygame.sprite.collide_mask)
+    colisao4 = pygame.sprite.spritecollide(player1, players, False, pygame.sprite.collide_mask) 
     # ----- Trata eventos
     print(bola.rect.y)
     for event in pygame.event.get():
