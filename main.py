@@ -82,14 +82,14 @@ while game:
         p2_gols += 1
         print("Gol do Player 2!!!!")
         print(f"O player 2 está com {p2_gols} gols!")
-        bola.rect.x = 650
+        bola.rect.x = 630
         bola.speedx = 0
         
     elif bola.rect.x > 1100:
         p1_gols += 1
         print("Gol do Player 1!!!!")
         print(f"O player 1 está com {p1_gols} gols!")
-        bola.rect.x = 650
+        bola.rect.x = 630
         bola.speedx = 0
         
     
