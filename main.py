@@ -26,7 +26,7 @@ background = pygame.transform.scale(background, (WIDTH, HEIGHT))
 chao_img = pygame.image.load('chao.png').convert()
 chao_img = pygame.transform.scale(chao_img, (1300, 110))
 
-placar_img = pygame.image.load('placar.png').convert()
+placar_img = pygame.image.load('placar.png').convert_alpha()
 placar_img = pygame.transform.scale(placar_img, (400, 80))
 
 skin1_img = pygame.image.load('skin1.png').convert_alpha()
