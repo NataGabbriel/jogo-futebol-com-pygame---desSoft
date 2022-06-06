@@ -121,7 +121,7 @@ class Placar(pygame.sprite.Sprite):
 
         self.image = img
         self.rect = self.image.get_rect()
-        self.rect.x = 300
+        self.rect.x = 445
         self.rect.y = 20
         
         
