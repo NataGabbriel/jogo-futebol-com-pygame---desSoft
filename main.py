@@ -22,20 +22,22 @@ pygame.font.init()
 fonte = pygame.font.get_default_font()
 font = pygame.font.SysFont(fonte, 60)
 fonte2 = pygame.font.get_default_font()
-font2 = pygame.font.SysFont(fonte, 25)
-background = pygame.image.load('background.png').convert()
+font2 = pygame.font.SysFont(fonte2, 25)
+fonte3 = pygame.font.get_default_font()
+font3 = pygame.font.SysFont(fonte3, 40)
+background = pygame.image.load('jogo-futebol-com-pygame---desSoft/background.png').convert()
 background = pygame.transform.scale(background, (WIDTH, HEIGHT))
-chao_img = pygame.image.load('chao.png').convert()
+chao_img = pygame.image.load('jogo-futebol-com-pygame---desSoft/chao.png').convert()
 chao_img = pygame.transform.scale(chao_img, (1300, 110))
 
-placar_img = pygame.image.load('placar.png').convert_alpha()
+placar_img = pygame.image.load('jogo-futebol-com-pygame---desSoft/placar.png').convert_alpha()
 placar_img = pygame.transform.scale(placar_img, (400, 80))
 
-skin1_img = pygame.image.load('skin1.png').convert_alpha()
+skin1_img = pygame.image.load('jogo-futebol-com-pygame---desSoft/skin1.png').convert_alpha()
 skin1_img = pygame.transform.scale(skin1_img, (PLAYER_WIDTH, PLAYER_HEIGHT))
-skin2_img = pygame.image.load('skin2.png').convert_alpha()
+skin2_img = pygame.image.load('jogo-futebol-com-pygame---desSoft/skin2.png').convert_alpha()
 skin2_img = pygame.transform.scale(skin2_img, (PLAYER_WIDTH, PLAYER_HEIGHT))
-bola_img = pygame.image.load('bola55.png').convert_alpha()
+bola_img = pygame.image.load('jogo-futebol-com-pygame---desSoft/bola55.png').convert_alpha()
 bola_img = pygame.transform.scale(bola_img, (PLAYER_WIDTH-45, PLAYER_HEIGHT-31))
 game = True
 # Variável para o ajuste de velocidade
@@ -70,7 +72,7 @@ p_bola = 0
 while game:
     clock.tick(FPS)
     time += 1
-    tempo = time/FPS
+    tempo = int(time/FPS)
     colisao0 = pygame.sprite.groupcollide(players, bola_g, False, False, pygame.sprite.collide_mask)
     colisao1 = pygame.sprite.groupcollide(player1s, bola_g, False, False, pygame.sprite.collide_mask)
     colisao2 = pygame.sprite.groupcollide(player2s, bola_g, False, False, pygame.sprite.collide_mask)
@@ -95,6 +97,7 @@ while game:
     
     p2_gols_str = font.render(str(p2_gols),  1, (255,255,255))
     p1_gols_str = font.render(str(p1_gols),  1, (255,255,255))
+    temporizador = font3.render(str(tempo), 1, (255,255,0))
     player1_str = font2.render(str('Player 1'), 1, (255,255,255))
     player2_str = font2.render(str('Player 2'), 1, (255,255,255))
 
@@ -253,6 +256,10 @@ while game:
     window.blit(p2_gols_str, (710, 50))
     window.blit(player1_str, (550, 25))
     window.blit(player2_str, (680, 25))
+    if tempo<10:
+        window.blit(temporizador, (640,62))
+    else:
+        window.blit(temporizador, (630,62))
     pygame.display.update()  # Mostra o novo frame para o jogador
 
 # ===== Finalização =====
