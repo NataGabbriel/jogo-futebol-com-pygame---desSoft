@@ -85,13 +85,21 @@ def game_screen(window):
         colisao3 = pygame.sprite.groupcollide(player1s, player2s, False, False, pygame.sprite.collide_mask)
         colisao4 = pygame.sprite.groupcollide(chao_g, bola_g, False, False, pygame.sprite.collide_mask) 
         # ----- Trata eventos
-        
+
         if bola.rect.x < 150: 
             p2_gols += 1
             print("Gol do Player 2!!!!")
             print(f"O player 2 está com {p2_gols} gols!")
             bola.rect.x = 630
             bola.speedx = 0
+            player1.rect.x = 505
+            player1.rect.y = 359
+            player2.rect.x = 705
+            player2.rect.y = 359
+            player1.speedx = 0
+            player1.speedy = 0
+            player2.speedx = 0
+            player2.speedy = 0
             
         elif bola.rect.x > 1100:
             p1_gols += 1
@@ -99,6 +107,14 @@ def game_screen(window):
             print(f"O player 1 está com {p1_gols} gols!")
             bola.rect.x = 630
             bola.speedx = 0
+            player1.rect.x = 505
+            player1.rect.y = 359
+            player2.rect.x = 705
+            player2.rect.y = 359
+            player1.speedx = 0
+            player1.speedy = 0
+            player2.speedx = 0
+            player2.speedy = 0
             
         
         p2_gols_str = font.render(str(p2_gols),  1, (255,255,255))
