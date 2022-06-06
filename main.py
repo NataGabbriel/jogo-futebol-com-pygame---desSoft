@@ -1,9 +1,9 @@
 # ===== Inicialização =====
 # ----- Importa e inicia pacotes
-from pyparsing import col
+
 from config import WIDTH, HEIGHT, pulo, PLAYER_HEIGHT, PLAYER_WIDTH, SHIP_HEIGHT, SHIP_WIDTH, sent11, sent12, sent21, sent22, FPS
 from sprites import Skin, Bola
-from email.mime import base
+
 import pygame
 import random
 
@@ -67,10 +67,13 @@ while game:
     
     if bola.rect.x < 150:
         player2_gols += 1
-        print("Gol do Player 1!!!!")
+        print("Gol do Player 2!!!!")
+        print(f"O player 2 está com {player2_gols} gols!")
     elif bola.rect.x > 1100:
         player1_gols += 1
-        print("Gol do Player 2!!!!")
+        print("Gol do Player 1!!!!")
+        print(f"O player 1 está com {player1_gols} gols!")
+    
     for event in pygame.event.get():
         # ----- Verifica consequências
     
@@ -129,10 +132,10 @@ while game:
                 player2.speedx += 8
             if event.key == pygame.K_UP:
                 player2.pular()
-            if event.key == pygame.K_RSHIFT:
+            if event.key == pygame.K_KP_ENTER:
                 if len(colisao2) > 0:
                     bola.speedx = -20
-            if event.key == pygame.K_KP_ENTER:
+            if event.key == pygame.K_RSHIFT:
                 if len(colisao2) > 0:
                     bola.speedx = -50
                     bola.speedy = -30
@@ -161,7 +164,7 @@ while game:
             if player1.speedx == 0 or player1.speedx > 0 and bola.speedx < 0 or player1.speedx < 0 and bola.speedx <0:
                 bola.speedx = 0
                 bola.rect.x += 0.2*bola.speedx
-                bola.speedy = 0 
+                bola.speedy = 0  
                 if bola.rect.y < 390:
                     bola.speedy = 5
                 
