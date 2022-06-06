@@ -11,3 +11,8 @@ sent12 = HEIGHT -75
 sent21 = (WIDTH / 2) + 100
 sent22 = HEIGHT -75
 FPS = 30
+
+# Estados para controle do fluxo da aplicação
+INIT = 0
+GAME = 1
+QUIT = 2
