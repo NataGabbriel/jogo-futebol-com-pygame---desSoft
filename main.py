@@ -2,7 +2,7 @@
 # ----- Importa e inicia pacotes
 
 from config import WIDTH, HEIGHT, pulo, PLAYER_HEIGHT, PLAYER_WIDTH, SHIP_HEIGHT, SHIP_WIDTH, sent11, sent12, sent21, sent22, FPS
-from sprites import Skin, Bola
+from sprites import Chao, Skin, Bola, Placar
 
 import pygame
 import random
@@ -17,11 +17,18 @@ pygame.init()
 
 window = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Futebol Cabeçudo')
-
+pygame.font.init() 
 # ----- Inicia assets
-font = pygame.font.SysFont(None, 48)
+fonte = pygame.font.get_default_font()
+font = pygame.font.SysFont(fonte, 60)
 background = pygame.image.load('background.png').convert()
 background = pygame.transform.scale(background, (WIDTH, HEIGHT))
+chao_img = pygame.image.load('chao.png').convert()
+chao_img = pygame.transform.scale(chao_img, (1300, 110))
+
+placar_img = pygame.image.load('placar.png').convert()
+placar_img = pygame.transform.scale(placar_img, (400, 80))
+
 skin1_img = pygame.image.load('skin1.png').convert_alpha()
 skin1_img = pygame.transform.scale(skin1_img, (PLAYER_WIDTH, PLAYER_HEIGHT))
 skin2_img = pygame.image.load('skin2.png').convert_alpha()
@@ -38,42 +45,52 @@ players = pygame.sprite.Group()
 player1s = pygame.sprite.Group()
 player2s = pygame.sprite.Group()
 bola_g = pygame.sprite.Group()
-
+chao_g = pygame.sprite.Group()
 all_sprites = pygame.sprite.Group()
 
 # Criando o jogador
 player1 = Skin(skin1_img, sent11, sent12)
 player2 = Skin(skin2_img, sent21, sent22)
 bola = Bola(bola_img)
-all_sprites.add(player1, player2, bola)
+chao = Chao(chao_img)
+placar = Placar(placar_img)
+all_sprites.add(chao, player1, player2, placar, bola)
 players.add(player1, player2)
 player1s.add(player1)
 player2s.add(player2)
 bola_g.add(bola)
-player1_gols = 0
-player2_gols = 0
-
-
+chao_g.add(chao)
+p1_gols = 0
+p2_gols = 0
+time = 0
+p_bola = 0
 # ===== Loop principal =====
 while game:
     clock.tick(FPS)
-
+    time += 1
+    tempo = time/FPS
     colisao0 = pygame.sprite.groupcollide(players, bola_g, False, False, pygame.sprite.collide_mask)
     colisao1 = pygame.sprite.groupcollide(player1s, bola_g, False, False, pygame.sprite.collide_mask)
     colisao2 = pygame.sprite.groupcollide(player2s, bola_g, False, False, pygame.sprite.collide_mask)
     colisao3 = pygame.sprite.groupcollide(player1s, player2s, False, False, pygame.sprite.collide_mask)
-    colisao4 = pygame.sprite.spritecollide(player1, players, False, pygame.sprite.collide_mask) 
+    colisao4 = pygame.sprite.groupcollide(chao_g, bola_g, False, False, pygame.sprite.collide_mask) 
     # ----- Trata eventos
     
-    if bola.rect.x < 150:
-        player2_gols += 1
+    if bola.rect.x < 150: 
+        p2_gols += 1
         print("Gol do Player 2!!!!")
-        print(f"O player 2 está com {player2_gols} gols!")
+        print(f"O player 2 está com {p2_gols} gols!")
+        
     elif bola.rect.x > 1100:
-        player1_gols += 1
+        p1_gols += 1
         print("Gol do Player 1!!!!")
-        print(f"O player 1 está com {player1_gols} gols!")
+        print(f"O player 1 está com {p1_gols} gols!")
+        
     
+    p2_gols_str = font.render(str(p2_gols),  1, (255,255,255))
+    p1_gols_str = font.render(str(p1_gols),  1, (255,255,255))
+
+
     for event in pygame.event.get():
         # ----- Verifica consequências
     
@@ -160,11 +177,13 @@ while game:
             player1.rect.x -= player1.speedx
             player1.rect.x += player2.speedx
             bola.speedy = -20
+            print(colisao0)
         if len(colisao1) > 0:
             if player1.speedx == 0 or player1.speedx > 0 and bola.speedx < 0 or player1.speedx < 0 and bola.speedx <0:
                 bola.speedx = 0
                 bola.rect.x += 0.2*bola.speedx
                 bola.speedy = 0  
+                print(colisao1)
                 if bola.rect.y < 390:
                     bola.speedy = 5
                 
@@ -199,14 +218,18 @@ while game:
                 
                 
             colisao2 = []
-        #elif len(colisao2) > 0:
-        #    bola.speedx -= player2.speedx - 1
-    #else:
-        #if bola.speedx > 0 and len(colisao0) == 0:
-        #    if chute_p1_de == True:
-        #        bola.speedx -= 1
-        #    if chute_p1_ed == True:
-        #        bola.speedx += 1
+    if len(colisao4) > 0:
+        if bola.speedy > 5:
+            bola.speedy = - 0.5*bola.speedy
+            p_bola += 1
+            print("Aconteci")
+            if p_bola > 5:
+                bola.speedy = 0
+                bola.rect.y = 390
+                p_bola = 0
+                print("FIZ")
+        colisao4 = []
+
     if len(colisao3) > 0:
         player1.rect.x -= 8
         player2.rect.x += 8 
@@ -214,12 +237,13 @@ while game:
         
     
     all_sprites.update()
-
     
     
     window.blit(background, (0, 0))
-    all_sprites.draw(window)
     
+    all_sprites.draw(window)
+    window.blit(p1_gols_str, (570, 50))
+    window.blit(p2_gols_str, (710, 50))
     pygame.display.update()  # Mostra o novo frame para o jogador
 
 # ===== Finalização =====

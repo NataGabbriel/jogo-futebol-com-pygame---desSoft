@@ -14,7 +14,7 @@ class Bola(pygame.sprite.Sprite):
         self.image = img
         self.rect = self.image.get_rect()
         self.rect.centerx = (WIDTH / 2)
-        self.rect.bottom = HEIGHT -75
+        self.rect.y = 0
         self.speedy = 0
         self.speedx = 0
         
@@ -37,13 +37,13 @@ class Bola(pygame.sprite.Sprite):
         if self.rect.left < 65:
             self.rect.left = 65
         if self.rect.y < 249:
-            self.speedy -= 10
+            self.speedy += 10
         if self.rect.x < 100 or self.rect.x > 1150:
+            self.rect = self.image.get_rect()
             self.rect.centerx = (WIDTH / 2)
-            self.rect.bottom = HEIGHT -75
-            self.speedx = 0
+            self.rect.y = 0
             self.speedy = 0
-        
+            self.speedx = 0
         if self.rect.y < 390:
             self.speedy += 5
         elif self.rect.y > 384:
@@ -105,3 +105,27 @@ class Skin(pygame.sprite.Sprite ):
         if not self.pulando:
             self.speedy -= pulo
             self.pulando = True
+
+class Chao(pygame.sprite.Sprite):
+    def __init__(self, img):
+        pygame.sprite.Sprite.__init__(self)
+
+        self.image = img
+        self.rect = self.image.get_rect()
+        self.rect.x = 1
+        self.rect.y = 423
+
+class Placar(pygame.sprite.Sprite):
+    def __init__(self, img):
+        pygame.sprite.Sprite.__init__(self)
+
+        self.image = img
+        self.rect = self.image.get_rect()
+        self.rect.x = 300
+        self.rect.y = 20
+        
+        
+
+
+        
+    
