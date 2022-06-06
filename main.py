@@ -21,6 +21,8 @@ pygame.font.init()
 # ----- Inicia assets
 fonte = pygame.font.get_default_font()
 font = pygame.font.SysFont(fonte, 60)
+fonte2 = pygame.font.get_default_font()
+font2 = pygame.font.SysFont(fonte, 25)
 background = pygame.image.load('background.png').convert()
 background = pygame.transform.scale(background, (WIDTH, HEIGHT))
 chao_img = pygame.image.load('chao.png').convert()
@@ -81,18 +83,20 @@ while game:
         print("Gol do Player 2!!!!")
         print(f"O player 2 está com {p2_gols} gols!")
         bola.rect.x = 650
+        bola.speedx = 0
         
     elif bola.rect.x > 1100:
         p1_gols += 1
         print("Gol do Player 1!!!!")
         print(f"O player 1 está com {p1_gols} gols!")
         bola.rect.x = 650
-
+        bola.speedx = 0
         
     
     p2_gols_str = font.render(str(p2_gols),  1, (255,255,255))
     p1_gols_str = font.render(str(p1_gols),  1, (255,255,255))
-
+    player1_str = font2.render(str('Player 1'), 1, (255,255,255))
+    player2_str = font2.render(str('Player 2'), 1, (255,255,255))
 
     for event in pygame.event.get():
         # ----- Verifica consequências
@@ -245,8 +249,10 @@ while game:
     window.blit(background, (0, 0))
     
     all_sprites.draw(window)
-    window.blit(p1_gols_str, (570, 50))
+    window.blit(p1_gols_str, (560, 50))
     window.blit(p2_gols_str, (710, 50))
+    window.blit(player1_str, (550, 25))
+    window.blit(player2_str, (680, 25))
     pygame.display.update()  # Mostra o novo frame para o jogador
 
 # ===== Finalização =====
