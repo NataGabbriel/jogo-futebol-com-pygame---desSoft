@@ -50,7 +50,8 @@ players.add(player1, player2)
 player1s.add(player1)
 player2s.add(player2)
 bola_g.add(bola)
-
+player1_gols = 0
+player2_gols = 0
 
 
 # ===== Loop principal =====
@@ -63,7 +64,13 @@ while game:
     colisao3 = pygame.sprite.groupcollide(player1s, player2s, False, False, pygame.sprite.collide_mask)
     colisao4 = pygame.sprite.spritecollide(player1, players, False, pygame.sprite.collide_mask) 
     # ----- Trata eventos
-    print(bola.rect.y)
+    
+    if bola.rect.x < 150:
+        player2_gols += 1
+        print("Gol do Player 1!!!!")
+    elif bola.rect.x > 1100:
+        player1_gols += 1
+        print("Gol do Player 2!!!!")
     for event in pygame.event.get():
         # ----- Verifica consequências
     
@@ -146,31 +153,49 @@ while game:
         
 
     if len(colisao0) > 0:
+        if len(colisao1) > 0 and len(colisao2) > 0:
+            player1.rect.x -= player1.speedx
+            player1.rect.x += player2.speedx
+            bola.speedy = -20
         if len(colisao1) > 0:
-            if player1.speedx == 0 or player1.speedx > 0 and bola.speedx < 0:
+            if player1.speedx == 0 or player1.speedx > 0 and bola.speedx < 0 or player1.speedx < 0 and bola.speedx <0:
                 bola.speedx = 0
-            if player1.rect.x < bola.rect.x:
+                bola.rect.x += 0.2*bola.speedx
+                bola.speedy = 0 
+                if bola.rect.y < 390:
+                    bola.speedy = 5
+                
+                print ("if 1")
+            elif player1.rect.x < bola.rect.x:
                 bola.rect.x += 8
                 player1.rect.x -= 1
-                
+            
+                print("Elif 1")
             elif player1.rect.x > bola.rect.x:
                 bola.rect.x -= 8
                 player1.rect.x += 1
                 
+                print("Elif 2")
             colisao1 = []           
             
         if len(colisao2) > 0:
-            if player2.speedx == 0:
+            if player2.speedx == 0 or player1.speedx < 0 and bola.speedx > 0 or player1.speedx > 0 and bola.speedx > 0:
                 bola.speedx = 0
+                bola.speedy = 0
+                if bola.rect.y < 390:
+                    bola.speedy = 5
+                print("if2")
             if player2.rect.x < bola.rect.x:
                 bola.rect.x += 8
                 player2.rect.x -= 1
+                
                 
             elif player2.rect.x > bola.rect.x:
                 bola.rect.x -= 8
                 player2.rect.x += 1
                 
-            colisao1 = []
+                
+            colisao2 = []
         #elif len(colisao2) > 0:
         #    bola.speedx -= player2.speedx - 1
     #else:
@@ -182,20 +207,16 @@ while game:
     if len(colisao3) > 0:
         player1.rect.x -= 8
         player2.rect.x += 8 
-        #player1.speedx = 0
-        #player2.speedx = 0
+        
         
     
     all_sprites.update()
 
     
-    # ----- Gera saídas
-    #window.fill((0, 0, 0))  # Preenche com a cor branca
+    
     window.blit(background, (0, 0))
-    all_sprites.draw(window)#window.blit(skin1_img, (550, 360))
-    # Desenhando meteoros
-    #all_sprites.draw(window)
-
+    all_sprites.draw(window)
+    
     pygame.display.update()  # Mostra o novo frame para o jogador
 
 # ===== Finalização =====
