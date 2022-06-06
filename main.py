@@ -25,19 +25,19 @@ fonte2 = pygame.font.get_default_font()
 font2 = pygame.font.SysFont(fonte2, 25)
 fonte3 = pygame.font.get_default_font()
 font3 = pygame.font.SysFont(fonte3, 40)
-background = pygame.image.load('jogo-futebol-com-pygame---desSoft/background.png').convert()
+background = pygame.image.load('background.png').convert()
 background = pygame.transform.scale(background, (WIDTH, HEIGHT))
-chao_img = pygame.image.load('jogo-futebol-com-pygame---desSoft/chao.png').convert()
+chao_img = pygame.image.load('chao.png').convert()
 chao_img = pygame.transform.scale(chao_img, (1300, 110))
 
-placar_img = pygame.image.load('jogo-futebol-com-pygame---desSoft/placar.png').convert_alpha()
+placar_img = pygame.image.load('placar.png').convert_alpha()
 placar_img = pygame.transform.scale(placar_img, (400, 80))
 
-skin1_img = pygame.image.load('jogo-futebol-com-pygame---desSoft/skin1.png').convert_alpha()
+skin1_img = pygame.image.load('skin1.png').convert_alpha()
 skin1_img = pygame.transform.scale(skin1_img, (PLAYER_WIDTH, PLAYER_HEIGHT))
-skin2_img = pygame.image.load('jogo-futebol-com-pygame---desSoft/skin2.png').convert_alpha()
+skin2_img = pygame.image.load('skin2.png').convert_alpha()
 skin2_img = pygame.transform.scale(skin2_img, (PLAYER_WIDTH, PLAYER_HEIGHT))
-bola_img = pygame.image.load('jogo-futebol-com-pygame---desSoft/bola55.png').convert_alpha()
+bola_img = pygame.image.load('bola55.png').convert_alpha()
 bola_img = pygame.transform.scale(bola_img, (PLAYER_WIDTH-45, PLAYER_HEIGHT-31))
 game = True
 # Variável para o ajuste de velocidade
@@ -72,7 +72,7 @@ p_bola = 0
 while game:
     clock.tick(FPS)
     time += 1
-    tempo = int(time/FPS)
+    tempo = 70 - int(time/FPS)
     colisao0 = pygame.sprite.groupcollide(players, bola_g, False, False, pygame.sprite.collide_mask)
     colisao1 = pygame.sprite.groupcollide(player1s, bola_g, False, False, pygame.sprite.collide_mask)
     colisao2 = pygame.sprite.groupcollide(player2s, bola_g, False, False, pygame.sprite.collide_mask)
@@ -208,8 +208,13 @@ while game:
                 player1.rect.x += 1
                 
                 print("Elif 2")
-            colisao1 = []           
-            
+            colisao1 = []    
+        
+        if len(colisao1) > 1 and player1.rect.y < 390:
+            bola.speedx = 50
+            bola.speedy = -30
+            colisao1 = []
+
         if len(colisao2) > 0:
             if player2.speedx == 0 or player1.speedx < 0 and bola.speedx > 0 or player1.speedx > 0 and bola.speedx > 0:
                 bola.speedx = 0
@@ -228,6 +233,13 @@ while game:
                 
                 
             colisao2 = []
+        
+        if len(colisao2) and player2.rect.y < 390:
+            bola.speedy = -30
+            bola.speedx = -50
+            
+            colisao2 = []
+
     if len(colisao4) > 0:
         if bola.speedy > 5:
             bola.speedy = - 0.5*bola.speedy
