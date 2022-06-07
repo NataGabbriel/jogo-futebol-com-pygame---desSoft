@@ -12,7 +12,7 @@ pygame.init()
  
 # ----- Gera tela principal
 window = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption('Novinha')
+pygame.display.set_caption('Futebol Cabeçudo')
 
 state = INIT
 while state != QUIT:
