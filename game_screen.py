@@ -93,6 +93,10 @@ def game_screen(window):
                 print(f"O player 2 está com {p2_gols} gols!")
                 bola.rect.x = 630
                 bola.speedx = 0
+                player1.rect.x = 300
+                player1.rect.y = 349
+                player2.rect.x = 910
+                player2.rect.y = 349
                 
             elif bola.rect.x > 1100:
                 p1_gols += 1
@@ -100,6 +104,10 @@ def game_screen(window):
                 print(f"O player 1 está com {p1_gols} gols!")
                 bola.rect.x = 630
                 bola.speedx = 0
+                player1.rect.x = 300
+                player1.rect.y = 349
+                player2.rect.x = 910
+                player2.rect.y = 349
                 
             
             p2_gols_str = font.render(str(p2_gols),  1, (255,255,255))
