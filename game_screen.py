@@ -18,6 +18,7 @@ def game_screen(window):
     #window = pygame.display.set_mode((WIDTH, HEIGHT))
     #pygame.display.set_caption('Futebol Cabeçudo')
     pygame.font.init() 
+    pygame.mixer.init()
     # ----- Inicia assets
     fonte = pygame.font.get_default_font()
     font = pygame.font.SysFont(fonte, 60)
@@ -42,6 +43,9 @@ def game_screen(window):
     bola_img = pygame.image.load('bola55.png').convert_alpha()
     bola_img = pygame.transform.scale(bola_img, (PLAYER_WIDTH-45, PLAYER_HEIGHT-31))
     
+    # Carrega os sons do jogo
+    gol_sound = pygame.mixer.Sound('gol.mp4')
+
     # Variável para o ajuste de velocidade
     clock = pygame.time.Clock()
 
@@ -76,7 +80,7 @@ def game_screen(window):
     TIME = 2
     state = PLAYING
 
-    # ===== Loop principal =====
+    # ===== Loop principal =====   
     while state != DONE:
         if state == PLAYING:
             clock.tick(FPS)
@@ -99,6 +103,7 @@ def game_screen(window):
                 player1.rect.y = 349
                 player2.rect.x = 910
                 player2.rect.y = 349
+                gol_sound.play()
                 
             elif bola.rect.x > 1100:
                 p1_gols += 1
@@ -110,6 +115,7 @@ def game_screen(window):
                 player1.rect.y = 349
                 player2.rect.x = 910
                 player2.rect.y = 349
+                gol_sound.play()
                 
             
             p2_gols_str = font.render(str(p2_gols),  1, (255,255,255))
