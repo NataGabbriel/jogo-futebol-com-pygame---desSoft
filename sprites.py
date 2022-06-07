@@ -45,7 +45,7 @@ class Bola(pygame.sprite.Sprite):
             self.speedy = 0
             self.speedx = 0
         if self.rect.y < 390:
-            self.speedy += 5
+            self.speedy += 2
         elif self.rect.y > 384:
             #self.speedy = - 0.25*self.speedy
             #self.speedx = 0.8*self.speedx
@@ -123,9 +123,5 @@ class Placar(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = 445
         self.rect.y = 20
-        
-    
-
-
         
     
