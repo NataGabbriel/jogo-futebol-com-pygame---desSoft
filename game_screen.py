@@ -362,6 +362,8 @@ def game_screen(window):
                     elif player2.rect.x > bola.rect.x:
                         bola.rect.x -= 8
                         player2.rect.x += 0
+                        if player2.speedx > 0:
+                            bola.speedx = 0
                         colisao0 = []
                         colisao2 = []
                         
