@@ -8,17 +8,22 @@ from config import FPS, GAME, QUIT, WIDTH, HEIGHT
 def init_screen(screen):
     # Variável para o ajuste de velocidade
     clock = pygame.time.Clock()
-
+    
     # Carrega o fundo da tela inicial
-    back = pygame.image.load('init_screen.png').convert()
-    back = pygame.transform.scale(back, (WIDTH, HEIGHT))
-
+    back = pygame.image.load('init_screen.png').convert_alpha()
+    back = pygame.transform.scale(back, (1300, 550))
+    head = pygame.image.load('Head Boll.png').convert_alpha()
+    head = pygame.transform.scale(head, (500, 220))
+    fonte4 = pygame.font.get_default_font()
+    font4 = pygame.font.SysFont(fonte4, 40)
     running = True
+    t = 0
     while running:
 
         # Ajusta a velocidade do jogo.
-        clock.tick(0)
-
+        t += 1
+        clock.tick(60)
+        temp = int(t/FPS)
         # Processa os eventos (mouse, teclado, botão, etc).
         for event in pygame.event.get():
             # Verifica se foi fechado.
@@ -28,12 +33,16 @@ def init_screen(screen):
 
             if event.type == pygame.KEYUP:
                 state = GAME
-                
+                running = False
 
         # A cada loop, redesenha o fundo e os sprites
         
         screen.blit(back, (0,0))
-
+        if temp % 2 == 0:
+            screen.blit(head, (400,130))
+            jogar_dnv = font4.render(str("Aperte qualquer tecla para começar o jogo!"), 1, (255,255, 255))
+            screen.blit(jogar_dnv, (370, 450))
+        
         # Depois de desenhar tudo, inverte o display.
         pygame.display.flip()
 

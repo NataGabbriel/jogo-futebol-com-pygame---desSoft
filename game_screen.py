@@ -18,7 +18,7 @@ def game_screen(window):
     #window = pygame.display.set_mode((WIDTH, HEIGHT))
     #pygame.display.set_caption('Futebol Cabeçudo')
     pygame.font.init() 
-    pygame.mixer.init()
+    
     # ----- Inicia assets
     fonte = pygame.font.get_default_font()
     font = pygame.font.SysFont(fonte, 60)
