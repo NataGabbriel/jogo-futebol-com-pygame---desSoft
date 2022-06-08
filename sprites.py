@@ -3,9 +3,9 @@ from turtle import speed
 from config import WIDTH, HEIGHT, pulo
 import pygame
 import random
-
-
-
+ 
+pygame.mixer.init()
+gol_sound = pygame.mixer.Sound('gol2.mpeg')
 
 class Bola(pygame.sprite.Sprite):
     def __init__(self, img):
@@ -17,6 +17,7 @@ class Bola(pygame.sprite.Sprite):
         self.rect.y = 0
         self.speedy = 0
         self.speedx = 0
+        self.tocando = True
         
         # Mantem dentro da tela
         if self.rect.right > WIDTH - 140 :
@@ -57,6 +58,14 @@ class Bola(pygame.sprite.Sprite):
         self.rect.bottom = HEIGHT -75
         self.speedx = 0
         self.speedy = 0
+
+    def tocar(self):
+        if not self.tocando:
+            self.gol_sound = gol_sound
+            gol_sound.play()
+            self.tocando = True
+        else:
+            self.tocando = False
         
        
         

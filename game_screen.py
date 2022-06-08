@@ -89,6 +89,8 @@ def game_screen(window):
     # ===== Loop principal =====
    # pygame.mixer.music.play(loops=-1)
     while state != DONE:
+        if time==0:
+            apito_sound.play()
         if state == PLAYING:
             clock.tick(FPS)
             time += 1
@@ -110,7 +112,7 @@ def game_screen(window):
                 player1.rect.y = 349
                 player2.rect.x = 910
                 player2.rect.y = 349
-                gol_sound.play()
+                bola.tocar()
                     
                 
                 
@@ -124,7 +126,7 @@ def game_screen(window):
                 player1.rect.y = 349
                 player2.rect.x = 910
                 player2.rect.y = 349
-                gol_sound.play()
+                bola.tocar()
             
             p2_gols_str = font.render(str(p2_gols),  1, (255,255,255))
             p1_gols_str = font.render(str(p1_gols),  1, (255,255,255))
@@ -143,6 +145,7 @@ def game_screen(window):
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_y:
                         bola.reset()
+                        apito_sound.play()
 
 
                 if event.type == pygame.KEYDOWN:
