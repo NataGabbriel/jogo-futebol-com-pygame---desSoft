@@ -1,15 +1,16 @@
+# ----- Importa e inicia pacotes
 import pygame
 import random
 from os import path
 
-from config import FPS, GAME, QUIT, WIDTH, HEIGHT
+from config import *
 
-
+# Função da tela inicial que é invocaada pelo Main
 def init_screen(screen):
     # Variável para o ajuste de velocidade
     clock = pygame.time.Clock()
     
-    # Carrega o fundo da tela inicial
+    # Carrega as imagens, as fontes da página inicial e as variáveis da página inicial
     back = pygame.image.load('init_screen.png').convert_alpha()
     back = pygame.transform.scale(back, (1300, 550))
     head = pygame.image.load('Head Boll.png').convert_alpha()
@@ -18,9 +19,10 @@ def init_screen(screen):
     font4 = pygame.font.SysFont(fonte4, 40)
     running = True
     t = 0
+    # Inicia o looping principal da página inicial
     while running:
 
-        # Ajusta a velocidade do jogo.
+        # Ajusta a velocidade do jogo e cria variável temp para contar o tempo
         t += 1
         clock.tick(60)
         temp = int(t/FPS)
@@ -35,7 +37,7 @@ def init_screen(screen):
                 state = GAME
                 running = False
 
-        # A cada loop, redesenha o fundo e os sprites
+        # Faz o nome do jogo piscar utilizando quando a variável de temp como condicional para desenhar o nome na tela
         
         screen.blit(back, (0,0))
         if temp % 2 == 0:

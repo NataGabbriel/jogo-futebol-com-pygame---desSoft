@@ -88,11 +88,12 @@ class Skin(pygame.sprite.Sprite ):
         
     def update(self):
         
-        # Atualização da posição da nave
+        # Atualização do personagem
         self.rect.x += self.speedx
         
         self.rect.y += self.speedy
             
+        # gravidade no personagem
         if self.rect.y < 359:
             
             self.rect.y += 10
@@ -105,22 +106,25 @@ class Skin(pygame.sprite.Sprite ):
             self.rect.left = 150
         if self.rect.y < 249:
             self.speedy = 0
-             
+
+        # estabelece condições de pulo     
         if self.rect.y >= 349:
             self.pulando = False
 
+    # estabelece função para pular
     def pular(self):
         if not self.pulando:
             self.speedy -= pulo
             self.pulando = True
 
+    # Estabelece função para resetar a posição dos players
     def reset(self, sent1, sent2):
         self.rect.centerx = sent1
         self.rect.bottom = sent2
         self.pulando = False  
 
 
-
+# Cria a classe chão
 class Chao(pygame.sprite.Sprite):
     def __init__(self, img):
         pygame.sprite.Sprite.__init__(self)
@@ -130,6 +134,7 @@ class Chao(pygame.sprite.Sprite):
         self.rect.x = 1
         self.rect.y = 423
 
+# Cria a classe placar
 class Placar(pygame.sprite.Sprite):
     def __init__(self, img):
         pygame.sprite.Sprite.__init__(self)
