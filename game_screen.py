@@ -106,7 +106,7 @@ def game_screen(window):
         if state == TIME:
             clock.tick(60)
             time += 1
-            tempo = 90 - int(time/FPS)
+            tempo = int(time/FPS)
             
             if p2_gols > p1_gols:
                 
@@ -159,7 +159,7 @@ def game_screen(window):
         if state == PLAYING:
             clock.tick(FPS)
             time += 1
-            tempo = 10 - int(time/FPS)
+            tempo = 90 - int(time/FPS)
             colisao0 = pygame.sprite.groupcollide(players, bola_g, False, False, pygame.sprite.collide_mask)
             colisao1 = pygame.sprite.groupcollide(player1s, bola_g, False, False, pygame.sprite.collide_mask)
             colisao2 = pygame.sprite.groupcollide(player2s, bola_g, False, False, pygame.sprite.collide_mask)
