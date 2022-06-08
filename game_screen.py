@@ -1,7 +1,7 @@
 # ===== Inicialização =====
 # ----- Importa e inicia pacotes
 
-from turtle import done
+from turtle import delay, done
 from config import *
 from sprites import Chao, Skin, Bola, Placar
 import pygame
@@ -33,8 +33,8 @@ def game_screen(window):
     background = pygame.image.load('background.png').convert()
     background = pygame.transform.scale(background, (WIDTH, HEIGHT))
 
-   
-
+    gol =  pygame.image.load('gol.png').convert_alpha()
+    gol = pygame.transform.scale(gol, (500, 220))
     chao_img = pygame.image.load('chao.png').convert()
     chao_img = pygame.transform.scale(chao_img, (1300, 110))
     placar_img = pygame.image.load('placar.png').convert_alpha()
@@ -89,7 +89,8 @@ def game_screen(window):
     player1_str = ()
     player2_str = ()
     jogar = True
-
+    cont2 = 0
+    gool = False
     DONE = 0
     PLAYING = 1
     TIME = 2
@@ -168,6 +169,7 @@ def game_screen(window):
             # ----- Trata eventos
             
             if bola.rect.x < 150: 
+                gool = True
                 p2_gols += 1
                 print("Gol do Player 2!!!!")
                 print(f"O player 2 está com {p2_gols} gols!")
@@ -176,10 +178,12 @@ def game_screen(window):
                 player1.reset(sent11, sent12)
                 player2.reset(sent21, sent22)
                 bola.tocar()
+                window.blit(gol, (680, 25))
                 
                 
                 
             elif bola.rect.x > 1100:
+                gool = True
                 p1_gols += 1
                 print("Gol do Player 1!!!!")
                 print(f"O player 1 está com {p1_gols} gols!")
@@ -188,6 +192,8 @@ def game_screen(window):
                 player1.reset(sent11, sent12)
                 player2.reset(sent21, sent22)
                 bola.tocar()
+                window.blit(gol, (680, 25))
+                cont2 += 1
                 
 
             p2_gols_str = font.render(str(p2_gols),  1, (255,255,255))
@@ -381,6 +387,16 @@ def game_screen(window):
             window.blit(p2_gols_str, (710, 50))
             window.blit(player1_str, (550, 25))
             window.blit(player2_str, (680, 25))
+            
+            if gool == True:
+                
+                if cont2 < 20 or cont2 > 30 and cont2 < 45 :
+                    window.blit(gol, (420, 110))
+                cont2 += 1
+                if cont2 > 45:
+                    gool = False
+                    cont2 = 0
+            
             if tempo<10:
                 window.blit(temporizador, (640,62))
             else:
