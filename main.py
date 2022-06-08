@@ -17,7 +17,6 @@ pygame.mixer.music.load('torcida.mpeg')
 pygame.mixer.music.set_volume(0.4)
 state = INIT
 while state != QUIT:
-    pygame.mixer.music.play(loops=-1)
     if state == INIT:
         state = init_screen(window)
     elif state == GAME:

@@ -44,8 +44,14 @@ def game_screen(window):
     bola_img = pygame.transform.scale(bola_img, (PLAYER_WIDTH-45, PLAYER_HEIGHT-31))
     
     # Carrega os sons do jogo
-    gol_sound = pygame.mixer.Sound('gol.mp4')
-
+    pygame.mixer.music.load('torcida.mpeg')
+    pygame.mixer.music.set_volume(0.4)
+    pygame.mixer.music.play(loops=-1)
+    gol_sound = pygame.mixer.Sound('gol2.mpeg')
+    apito_sound = pygame.mixer.Sound('apito.mpeg')
+    
+    
+    
     # Variável para o ajuste de velocidade
     clock = pygame.time.Clock()
 
@@ -80,12 +86,13 @@ def game_screen(window):
     TIME = 2
     state = PLAYING
 
-    # ===== Loop principal =====   
+    # ===== Loop principal =====
+   # pygame.mixer.music.play(loops=-1)
     while state != DONE:
         if state == PLAYING:
             clock.tick(FPS)
             time += 1
-            tempo = 10 - int(time/FPS)
+            tempo = 90 - int(time/FPS)
             colisao0 = pygame.sprite.groupcollide(players, bola_g, False, False, pygame.sprite.collide_mask)
             colisao1 = pygame.sprite.groupcollide(player1s, bola_g, False, False, pygame.sprite.collide_mask)
             colisao2 = pygame.sprite.groupcollide(player2s, bola_g, False, False, pygame.sprite.collide_mask)
@@ -104,6 +111,8 @@ def game_screen(window):
                 player2.rect.x = 910
                 player2.rect.y = 349
                 gol_sound.play()
+                    
+                
                 
             elif bola.rect.x > 1100:
                 p1_gols += 1
@@ -116,7 +125,6 @@ def game_screen(window):
                 player2.rect.x = 910
                 player2.rect.y = 349
                 gol_sound.play()
-                
             
             p2_gols_str = font.render(str(p2_gols),  1, (255,255,255))
             p1_gols_str = font.render(str(p1_gols),  1, (255,255,255))
