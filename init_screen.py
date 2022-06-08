@@ -28,7 +28,7 @@ def init_screen(screen):
 
             if event.type == pygame.KEYUP:
                 state = GAME
-                running = False
+                
 
         # A cada loop, redesenha o fundo e os sprites
         

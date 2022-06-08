@@ -139,4 +139,3 @@ class Placar(pygame.sprite.Sprite):
         self.rect.x = 445
         self.rect.y = 20
         
-    
