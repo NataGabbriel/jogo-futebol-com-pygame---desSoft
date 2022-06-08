@@ -27,11 +27,15 @@ def game_screen(window):
     fonte3 = pygame.font.get_default_font()
     font3 = pygame.font.SysFont(fonte3, 40)
     fonte4 = pygame.font.get_default_font()
-    font4 = pygame.font.SysFont(fonte4, 200)
+    font4 = pygame.font.SysFont(fonte4, 40)
     fonte5 = pygame.font.get_default_font()
     font5 = pygame.font.SysFont(fonte3, 70)
     background = pygame.image.load('background.png').convert()
     background = pygame.transform.scale(background, (WIDTH, HEIGHT))
+
+    gol_d = pygame.image.load('gol.png').convert()
+    background = pygame.transform.scale(background, (WIDTH, HEIGHT))
+
     chao_img = pygame.image.load('chao.png').convert()
     chao_img = pygame.transform.scale(chao_img, (1300, 110))
     placar_img = pygame.image.load('placar.png').convert_alpha()
@@ -101,7 +105,7 @@ def game_screen(window):
             apito_sound.play()
         
         if state == TIME:
-            clock.tick(FPS)
+            clock.tick(60)
             time += 1
             tempo = 90 - int(time/FPS)
             
@@ -122,14 +126,32 @@ def game_screen(window):
             window.blit(p2_gols_str, (710, 50))
             window.blit(player1_str, (550, 25))
             window.blit(player2_str, (680, 25))
-
+            if tempo % 2 == 0:
+                jogar_dnv = font4.render(str("Aperte espaço para jogar de novo!"), 1, (255,255, 255))
+                window.blit(jogar_dnv, (425, 450))
+            
             for event in pygame.event.get():
                 # ----- Verifica consequências
             
                 if event.type == pygame.QUIT:
                     state = DONE
                 # Verifica se apertou alguma tecla.
-            
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_SPACE:
+                        state = PLAYING
+                        print ("Mais trabalho!")
+                        time = 0
+                        p1_gols = 0
+                        p2_gols = 0
+                        time = 0
+                        p_bola = 0
+                        bola.reset()
+                        player1.speedx = 0
+                        player1.speedy = 0
+                        player2.speedx = 0
+                        player2.speedy = 0
+                        player1.reset(sent11, sent12)
+                        player2.reset(sent21, sent22)
            
         
             pygame.display.update()  # Mostra o novo frame para o jogador
