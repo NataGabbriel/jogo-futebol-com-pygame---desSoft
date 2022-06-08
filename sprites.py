@@ -17,7 +17,7 @@ class Bola(pygame.sprite.Sprite):
         self.rect.y = 0
         self.speedy = 0
         self.speedx = 0
-        self.tocando = True
+        self.tocando = False
         
         # Mantem dentro da tela
         if self.rect.right > WIDTH - 140 :
@@ -26,8 +26,7 @@ class Bola(pygame.sprite.Sprite):
             self.rect.left = 140
         if self.rect.y < 249:
             self.speedy = 0
-        #if self.rect.y < 100:
-        #   self.speedy += 2
+        
 
     def update(self):
         self.rect.x += self.speedx
@@ -114,6 +113,13 @@ class Skin(pygame.sprite.Sprite ):
         if not self.pulando:
             self.speedy -= pulo
             self.pulando = True
+
+    def reset(self, sent1, sent2):
+        self.rect.centerx = sent1
+        self.rect.bottom = sent2
+        self.pulando = False  
+
+
 
 class Chao(pygame.sprite.Sprite):
     def __init__(self, img):
