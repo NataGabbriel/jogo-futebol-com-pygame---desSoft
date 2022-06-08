@@ -292,6 +292,9 @@ def game_screen(window):
                             bola.speedx = 0
                             bola.speedy = 0  
                             print(colisao1)
+                            colisao0 = []
+                            colisao1 = []
+                            colisao2 = []
                             if bola.rect.y < 390:
                                 bola.speedy = 5
                                 colisao0 = []
@@ -328,6 +331,9 @@ def game_screen(window):
                             bola.speedx = 0
                             bola.speedy = 0  
                             print(colisao1)
+                            colisao0 = []
+                            colisao1 = []
+                            colisao2 = []
                             if bola.rect.y < 390:
                                 bola.speedy = 5
                                 colisao0 = []
@@ -393,6 +399,8 @@ def game_screen(window):
                 if cont2 < 20 or cont2 > 30 and cont2 < 45 :
                     window.blit(gol, (420, 110))
                 cont2 += 1
+                player1.reset(sent11, sent12)
+                player2.reset(sent21, sent22)
                 if cont2 > 45:
                     gool = False
                     cont2 = 0

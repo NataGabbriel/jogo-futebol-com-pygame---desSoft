@@ -6,9 +6,9 @@ PLAYER_HEIGHT = 66
 SHIP_WIDTH = 50
 SHIP_HEIGHT = 38
 pulo = 75
-sent11 = (WIDTH / 2) - 100
+sent11 = (WIDTH / 2) - 300
 sent12 = HEIGHT -75
-sent21 = (WIDTH / 2) + 100
+sent21 = (WIDTH / 2) + 300
 sent22 = HEIGHT -75
 FPS = 30
 
