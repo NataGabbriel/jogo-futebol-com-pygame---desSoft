@@ -33,8 +33,7 @@ def game_screen(window):
     background = pygame.image.load('background.png').convert()
     background = pygame.transform.scale(background, (WIDTH, HEIGHT))
 
-    gol_d = pygame.image.load('gol.png').convert()
-    background = pygame.transform.scale(background, (WIDTH, HEIGHT))
+   
 
     chao_img = pygame.image.load('chao.png').convert()
     chao_img = pygame.transform.scale(chao_img, (1300, 110))
