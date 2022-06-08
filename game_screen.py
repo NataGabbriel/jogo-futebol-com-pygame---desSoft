@@ -113,13 +113,20 @@ def game_screen(window):
                 
                 window.blit(background, (0, 0))
                 p2_vence = font5.render(str("O player 2 venceu o jogo!"), 1, (255,150,0))
-                window.blit(p2_vence, (350, 100))
+                window.blit(p2_vence, (350, 150))
             
             if p1_gols > p2_gols:
 
                 window.blit(background, (0, 0))
                 p1_vence = font5.render(str("O player 1 venceu o jogo!"), 1, (255,150,0))
-                window.blit(p1_vence, (350, 100))
+                window.blit(p1_vence, (350, 150))
+            
+            if p1_gols == p2_gols:
+                window.blit(background, (0, 0))
+                empata1 = font5.render(str("Jogo de pato é assim mesmo,"), 1, (255,150,0))
+                window.blit(empata1, (300, 110))
+                empata2 = font5.render(str("termina empatado!"), 1, (255,150,0))
+                window.blit(empata2, (400, 160))    
 
             window.blit(placar.image, placar.rect)
             window.blit(p1_gols_str, (560, 50))
