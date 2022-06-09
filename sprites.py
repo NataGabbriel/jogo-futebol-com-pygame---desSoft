@@ -8,7 +8,9 @@ pygame.mixer.init()
 gol_sound = pygame.mixer.Sound('gol2.mpeg')
 
 class Bola(pygame.sprite.Sprite):
+    """Classe da Bola"""
     def __init__(self, img):
+        """Caracteísticas iniciais da bola"""
         pygame.sprite.Sprite.__init__(self)
 
         self.image = img
@@ -29,6 +31,7 @@ class Bola(pygame.sprite.Sprite):
         
 
     def update(self):
+        """Função que atualiza a bola"""
         self.rect.x += self.speedx
         self.rect.y += self.speedy
         
@@ -52,13 +55,14 @@ class Bola(pygame.sprite.Sprite):
             self.rect.y = 390
         
     def reset(self):        
-
+        """Função que reseta a bola para a posição inicial"""
         self.rect.centerx = (WIDTH / 2)
         self.rect.bottom = HEIGHT -75
         self.speedx = 0
         self.speedy = 0
 
     def tocar(self):
+        """Função que toca o som de gol"""
         if not self.tocando:
             self.gol_sound = gol_sound
             gol_sound.play()
@@ -74,7 +78,9 @@ class Bola(pygame.sprite.Sprite):
 
 
 class Skin(pygame.sprite.Sprite ):
+    """Classe do Personagem"""
     def __init__(self, img, sent1, sent2):
+        """Função que define as características iniciais de um personagem"""
         # Construtor da classe mãe (Sprite).
         pygame.sprite.Sprite.__init__(self)
 
@@ -87,7 +93,7 @@ class Skin(pygame.sprite.Sprite ):
         self.pulando = False
         
     def update(self):
-        
+        """Função que atualiza o personagem"""
         # Atualização do personagem
         self.rect.x += self.speedx
         
@@ -113,12 +119,14 @@ class Skin(pygame.sprite.Sprite ):
 
     # estabelece função para pular
     def pular(self):
+        """Função para o personagem pular"""
         if not self.pulando:
             self.speedy -= pulo
             self.pulando = True
 
     # Estabelece função para resetar a posição dos players
     def reset(self, sent1, sent2):
+        """Função que reseta a posição do personagem"""
         self.rect.centerx = sent1
         self.rect.bottom = sent2
         self.pulando = False  
@@ -126,7 +134,9 @@ class Skin(pygame.sprite.Sprite ):
 
 # Cria a classe chão
 class Chao(pygame.sprite.Sprite):
+    """Classe do chão"""
     def __init__(self, img):
+        """Função que dá os parâmetros do chão"""
         pygame.sprite.Sprite.__init__(self)
 
         self.image = img
@@ -136,7 +146,9 @@ class Chao(pygame.sprite.Sprite):
 
 # Cria a classe placar
 class Placar(pygame.sprite.Sprite):
+    """Classe do placar"""
     def __init__(self, img):
+        """Função que dá os parâmetros do placar"""
         pygame.sprite.Sprite.__init__(self)
 
         self.image = img

@@ -12,14 +12,14 @@ import random
 
 
 def game_screen(window):
+    """Função da tela do jogo"""
 
     # ----- Gera tela principal
 
-    #window = pygame.display.set_mode((WIDTH, HEIGHT))
-    #pygame.display.set_caption('Futebol Cabeçudo')
+    
     pygame.font.init() 
     
-    # ----- Inicia assets
+    # ----- Inicia imagens, fontes e músicas
     fonte = pygame.font.get_default_font()
     font = pygame.font.SysFont(fonte, 60)
     fonte2 = pygame.font.get_default_font()
@@ -59,7 +59,7 @@ def game_screen(window):
     clock = pygame.time.Clock()
 
 
-    #colisoes
+    # Criando os sprites e os grupos de sprites
     players = pygame.sprite.Group()
     player1s = pygame.sprite.Group()
     player2s = pygame.sprite.Group()
@@ -67,7 +67,7 @@ def game_screen(window):
     chao_g = pygame.sprite.Group()
     all_sprites = pygame.sprite.Group()
 
-    # Criando o jogador
+    
     
     player1 = Skin(skin1_img, sent11, sent12)
     player2 = Skin(skin2_img, sent21, sent22)
@@ -80,6 +80,9 @@ def game_screen(window):
     player2s.add(player2)
     bola_g.add(bola)
     chao_g.add(chao)
+
+    # Cria as variáveis do jogo
+
     p1_gols = 0
     p2_gols = 0
     time = 0
@@ -88,7 +91,6 @@ def game_screen(window):
     p1_gols_str = ()
     player1_str = ()
     player2_str = ()
-    jogar = True
     cont2 = 0
     gool = False
     DONE = 0
@@ -98,12 +100,14 @@ def game_screen(window):
     state = PLAYING
 
     # ===== Loop principal =====
-   # pygame.mixer.music.play(loops=-1)
+   
     while state != DONE:
         
+        # Inicia com o som de um apito
         if time==0:
             apito_sound.play()
         
+        # Condicional do fim de jogo - aba onde aparece o vencedor e dá a escolha de jogar novamente ou não.
         if state == TIME:
             clock.tick(60)
             time += 1
@@ -163,11 +167,16 @@ def game_screen(window):
         
             pygame.display.update()  # Mostra o novo frame para o jogador
             
-        
+        # Condicional do início do jogo - o sistema entra nesse if até o tempo do jogo acabar
         if state == PLAYING:
             clock.tick(FPS)
+            
+            # Cria contador do tempo
             time += 1
             tempo = 90 - int(time/FPS)
+
+
+            #Cria as colisões
             colisao0 = pygame.sprite.groupcollide(players, bola_g, False, False, pygame.sprite.collide_mask)
             colisao1 = pygame.sprite.groupcollide(player1s, bola_g, False, False, pygame.sprite.collide_mask)
             colisao2 = pygame.sprite.groupcollide(player2s, bola_g, False, False, pygame.sprite.collide_mask)
@@ -175,6 +184,7 @@ def game_screen(window):
             colisao4 = pygame.sprite.groupcollide(chao_g, bola_g, False, False, pygame.sprite.collide_mask) 
             # ----- Trata eventos
             
+            # Verifica a ocorrência de gols e reseta a posição da bola e dos jogadores se houver.
             if bola.rect.x < 150: 
                 gool = True
                 p2_gols += 1
@@ -202,27 +212,29 @@ def game_screen(window):
                 window.blit(gol, (680, 25))
                 cont2 += 1
                 
-
+            # Renderiza o texto do placar (gols, tempo e players)
             p2_gols_str = font.render(str(p2_gols),  1, (255,255,255))
             p1_gols_str = font.render(str(p1_gols),  1, (255,255,255))
             temporizador = font3.render(str(tempo), 1, (255,255,0))
             player1_str = font2.render(str('Player 1'), 1, (255,255,255))
             player2_str = font2.render(str('Player 2'), 1, (255,255,255))
 
+            # Verifica entradas e roda o jogo de acordo com elas
             for event in pygame.event.get():
                 # ----- Verifica consequências
-            
+
+                #Botão para sair
                 if event.type == pygame.QUIT:
                     state = DONE
-                # Verifica se apertou alguma tecla.
-            
                 
+            
+                # Botão de reset da bola
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_y:
                         bola.reset()
                         apito_sound.play()
 
-
+                # Jogador 1
                 if event.type == pygame.KEYDOWN:
                     # Dependendo da tecla, altera a velocidade.
                     if event.key == pygame.K_a:
@@ -255,7 +267,7 @@ def game_screen(window):
 
 
 
-
+                #Jogador 2
                 if event.type == pygame.KEYDOWN:
                     # Dependendo da tecla, altera a velocidade.
                     if event.key == pygame.K_LEFT:
@@ -286,13 +298,19 @@ def game_screen(window):
                         player2.speedx -= 8
                 
                 
+            # Verifica a ocorrência das colisões e executa os comandos necessários para cada uma delas
 
+            # Colisão dos jogadores com a bola
             if len(colisao0) > 0:
+
+                # Colisão ao mesmo tempo dos dois jogadores e a bola
                 if len(colisao1) > 0 and len(colisao2) > 0:
                     player1.rect.x -= player1.speedx
                     player1.rect.x += player2.speedx
                     bola.speedy = -50
                     print(colisao0)
+                
+                # Colisão do jogador 1 e a bola
                 if len(colisao1) > 0:
                     if player1.speedx == 0  or player1.speedx > 0 and bola.speedx < 0 or player1.speedx < 0 and bola.speedx < 0:
                         if player1.rect.y == 359:
@@ -331,7 +349,7 @@ def game_screen(window):
                     colisao1 = []    
                 
                 
-
+                # Colisão do jogador 2 e a bola
                 if len(colisao2) > 0:
                     if player2.speedx == 0 or player1.speedx < 0 and bola.speedx > 0 or player1.speedx > 0 and bola.speedx > 0:
                         if player2.rect.y == 359:
@@ -371,38 +389,41 @@ def game_screen(window):
                     colisao2 = []
                 
                 
-
+            # Colisão da bola com o chão - faz a bola pingar
             if len(colisao4) > 0:
                 if bola.speedy > 5:
                     bola.speedy = - 0.6*bola.speedy
                     p_bola += 1
-                    print("Aconteci")
+                    
                     if p_bola > 5:
                         bola.speedy = 0
                         bola.rect.y = 390
                         p_bola = 0
-                        print("FIZ")
+                        
                 colisao0 = []
                 colisao4 = []
 
+            # Colisão entre os players
             if len(colisao3) > 0:
                 player1.rect.x -= 8
                 player2.rect.x += 8 
                 colisao0 = []
                 colisao3 = []
                 
-            
+            # atualiza todos os sprites
             all_sprites.update()
             
-            
+            # Desenha a tela de fundo
             window.blit(background, (0, 0))
             
+            # Desenha os sprites e os textos na tela
             all_sprites.draw(window)
             window.blit(p1_gols_str, (560, 50))
             window.blit(p2_gols_str, (710, 50))
             window.blit(player1_str, (550, 25))
             window.blit(player2_str, (680, 25))
             
+            # Verifica a ocorrência de gol para mostrar texto de gol na tela
             if gool == True:
                 
                 if cont2 < 20 or cont2 > 30 and cont2 < 45 :
@@ -414,14 +435,17 @@ def game_screen(window):
                     gool = False
                     cont2 = 0
             
-            if tempo<10:
+            # Condicional para organizar a forma como o tempo aparece no placar
+            if tempo < 10:
                 window.blit(temporizador, (640,62))
             else:
                 window.blit(temporizador, (630,62))
+            
+            # atualiza o display
             pygame.display.update()  # Mostra o novo frame para o jogador
         
-        
-        if tempo <= 0 and jogar == True:
+        # condicional para verificar se o tempo do jogo já acabou
+        if tempo <= 0:
             state = TIME
     # ===== Finalização =====
     pygame.quit()  # Função do PyGame que finaliza os recursos utilizados

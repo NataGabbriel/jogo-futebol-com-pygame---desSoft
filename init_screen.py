@@ -7,6 +7,7 @@ from config import *
 
 # Função da tela inicial que é invocaada pelo Main
 def init_screen(screen):
+    """Função da tela inicial"""
     # Variável para o ajuste de velocidade
     clock = pygame.time.Clock()
     
