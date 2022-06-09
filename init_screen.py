@@ -49,4 +49,3 @@ def init_screen(screen):
         pygame.display.flip()
 
     return state
-

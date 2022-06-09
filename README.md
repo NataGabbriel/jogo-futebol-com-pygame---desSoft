@@ -38,3 +38,20 @@ Esse é o Futebol Cabeçudo, espero que gostem e tenham todos uma ótima divers�
 https://youtu.be/Z0bZsQ-4K6w
 
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/Z0bZsQ-4K6w/0.jpg)](https://youtu.be/Z0bZsQ-4K6w)
+
+
+
+
+Para jogar o jogo, deve-se executar o código do main.py. Após isso, basta seguir os passos exibidos na tela. 
+
+Na pasta config.py, temos as configurações básicas e fixas do jogo, como: largura da tela, altura da tela, tamanho dos players e da bola, intensidade do pulo, posição de respawn dos players, fps, init, game e quit.
+
+A pasta init_screen.py contém as respostas básicas para as entradas do teclado e os critérios para que o jogo rode enquanto necessário.
+
+Na pasta sprites.py, temos as classes definidas para a execução do jogo.
+
+Na pasta game_screen.py, temos é onde ocorre todas ações do jogo, respostas para eventos imprevisíveis que ocorrem no jogo, atualizações da tela e colisões.
+
+Na pasta main.py, temos a importação de todas as pastas necessárias e definidas anteriormente e a execução do jogo.
+
+Além disso, tem-se todas as imagens e áudios utilizados no jogo.
