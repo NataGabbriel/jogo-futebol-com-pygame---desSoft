@@ -150,7 +150,7 @@ def game_screen(window):
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE:
                         state = PLAYING
-                        print ("Mais trabalho!")
+                        
                         time = 0
                         p1_gols = 0
                         p2_gols = 0
@@ -188,8 +188,7 @@ def game_screen(window):
             if bola.rect.x < 150: 
                 gool = True
                 p2_gols += 1
-                print("Gol do Player 2!!!!")
-                print(f"O player 2 está com {p2_gols} gols!")
+                
                 
                 bola.reset()
                 player1.reset(sent11, sent12)
@@ -202,8 +201,7 @@ def game_screen(window):
             elif bola.rect.x > 1100:
                 gool = True
                 p1_gols += 1
-                print("Gol do Player 1!!!!")
-                print(f"O player 1 está com {p1_gols} gols!")
+                
                 
                 bola.reset()
                 player1.reset(sent11, sent12)
@@ -308,7 +306,7 @@ def game_screen(window):
                     player1.rect.x -= player1.speedx
                     player1.rect.x += player2.speedx
                     bola.speedy = -50
-                    print(colisao0)
+                    
                 
                 # Colisão do jogador 1 e a bola
                 if len(colisao1) > 0:
@@ -316,7 +314,7 @@ def game_screen(window):
                         if player1.rect.y == 359:
                             bola.speedx = 0
                             bola.speedy = 0  
-                            print(colisao1)
+                            
                             colisao0 = []
                             colisao1 = []
                             colisao2 = []
@@ -331,21 +329,21 @@ def game_screen(window):
                             colisao1 = []
                             colisao2 = []
                         
-                        print ("if 1")
+                        
                     elif player1.rect.x < bola.rect.x:
                         bola.rect.x += 8
                         player1.rect.x -= 0
                         colisao0 = []
                         colisao1 = []
 
-                        print("Elif 1")
+                        
                     elif player1.rect.x > bola.rect.x:
                         bola.rect.x -= 8
                         player1.rect.x += 0
                         colisao0 = []
                         colisao1 = []
 
-                        print("Elif 2")
+                        
                     colisao1 = []    
                 
                 
@@ -355,7 +353,7 @@ def game_screen(window):
                         if player2.rect.y == 359:
                             bola.speedx = 0
                             bola.speedy = 0  
-                            print(colisao1)
+                            
                             colisao0 = []
                             colisao1 = []
                             colisao2 = []
